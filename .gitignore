@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+node_modules/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+*.egg-info/
+build/
+dist/
+
+# Local scan artifacts
+context-health-report.json
+context-health-report.md
+blocked.json
+blocked.md

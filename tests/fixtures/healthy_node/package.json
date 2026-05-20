@@ -1,0 +1,12 @@
+{
+  "name": "healthy-node",
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
