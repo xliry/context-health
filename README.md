@@ -124,7 +124,7 @@ context-health [path] [--json] [--markdown PATH] [--fail-under SCORE]
 
 Default ignores include `.git`, `node_modules`, `.next`, `dist`, `build`, `coverage`, virtualenv folders, caches, and similar generated dependency paths.
 
-## What v0.1 Checks
+## What v0.2 Checks
 
 - README presence and run/test command documentation
 - `.env.example` or `.env.sample` when code references env vars
@@ -135,7 +135,7 @@ Default ignores include `.git`, `node_modules`, `.next`, `dist`, `build`, `cover
 - large text files and generated artifacts that remain in scanned paths
 - test command and CI evidence
 
-## What v0.1 Does Not Do
+## What v0.2 Does Not Do
 
 - Web UI
 - SaaS backend
@@ -157,3 +157,5 @@ python scripts/package_smoke.py
 ```
 
 The package smoke builds wheel and sdist artifacts, checks representative sdist test assets, installs the wheel into a fresh virtual environment, and runs the installed CLI.
+
+See [docs/release-checklist.md](docs/release-checklist.md) for the manual release-candidate checklist.
