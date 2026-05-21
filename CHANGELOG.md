@@ -10,6 +10,7 @@ All notable changes to Context Health will be documented in this file.
 - Added lightweight output snapshot tests for terminal, JSON, and Markdown reports.
 - Added package build smoke verification for wheel and sdist release artifacts.
 - Hardened sdist manifest to include full test assets and exclude generated artifacts.
+- Added finding catalog documentation and sync coverage.
 
 ## 0.1.0 - 2026-05-21
 
