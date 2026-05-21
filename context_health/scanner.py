@@ -24,6 +24,9 @@ DEFAULT_IGNORES = {
     "coverage",
     ".venv",
     "venv",
+    "env",
+    ".tox",
+    ".nox",
     "__pycache__",
     ".pytest_cache",
     ".mypy_cache",
@@ -105,8 +108,7 @@ def _walk(config: ScanConfig) -> tuple[list[FileInfo], dict[str, str]]:
     texts: dict[str, str] = {}
     for path in config.root.rglob("*"):
         rel = path.relative_to(config.root).as_posix()
-        parts = set(Path(rel).parts)
-        if path.is_dir() or parts & DEFAULT_IGNORES:
+        if path.is_dir() or _is_ignored_path(rel):
             continue
         if config.include and not any(fnmatch.fnmatch(rel, glob) for glob in config.include):
             continue
@@ -127,6 +129,15 @@ def _walk(config: ScanConfig) -> tuple[list[FileInfo], dict[str, str]]:
                 texts[rel] = preview
         files.append(FileInfo(rel, size, path.suffix.lower(), is_text, preview[:2000]))
     return files, texts
+
+
+def _is_ignored_path(rel: str) -> bool:
+    parts = Path(rel).parts
+    return any(part in DEFAULT_IGNORES or _looks_local_env_dir(part) for part in parts)
+
+
+def _looks_local_env_dir(part: str) -> bool:
+    return part.endswith("-env") or part.endswith("_env")
 
 
 def _looks_text(path: Path) -> bool:

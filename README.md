@@ -144,7 +144,7 @@ context-health [path] [--json] [--markdown PATH] [--fail-under SCORE]
                [--verbose]
 ```
 
-Default ignores include `.git`, `node_modules`, `.next`, `dist`, `build`, `coverage`, virtualenv folders, caches, and similar generated dependency paths.
+Default ignores include `.git`, `node_modules`, `.next`, `dist`, `build`, `coverage`, virtualenv-like folders such as `.venv`, `venv`, `env`, `*-env`, and `*_env`, caches, and similar generated dependency paths.
 
 ## What v0.2 Checks
 

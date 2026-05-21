@@ -21,6 +21,20 @@ def test_detects_node_profile_and_ignores_dependencies():
     assert "node_modules/ignored.js" not in {file.path for file in snapshot.files}
 
 
+def test_ignores_env_like_directories_but_keeps_root_dotenv(tmp_path):
+    (tmp_path / ".env").write_text("TOKEN=secret\n", encoding="utf-8")
+    env_dir = tmp_path / "project-env"
+    env_dir.mkdir()
+    ignored_key = "IGNORED" + "_KEY"
+    (env_dir / "ignored.py").write_text(f"os.getenv('{ignored_key}')\n", encoding="utf-8")
+
+    snapshot = scan(ScanConfig(tmp_path))
+    paths = {file.path for file in snapshot.files}
+
+    assert ".env" in paths
+    assert "project-env/ignored.py" not in paths
+
+
 def test_detects_python_profile():
     snapshot = scan(ScanConfig(FIXTURES / "python_missing_env"))
     assert "python" in snapshot.profile.ecosystems

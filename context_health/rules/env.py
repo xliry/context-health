@@ -14,6 +14,26 @@ PATTERNS = (
     re.compile(r"getenv\(['\"]([A-Z0-9_]+)['\"]\)"),
 )
 IGNORED_PREFIXES = ("NODE_", "PYTHON", "npm_")
+INFERENCE_IGNORED_PARTS = {
+    "node_modules",
+    ".venv",
+    "venv",
+    "env",
+    "vendor",
+    "vendors",
+    "vendored",
+    "third_party",
+    "third-party",
+    "generated",
+    "__generated__",
+    "dist",
+    "build",
+    "coverage",
+    ".next",
+    ".cache",
+    ".pytest_cache",
+    "__pycache__",
+}
 
 
 def run(snapshot: RepoSnapshot) -> list[Finding]:
@@ -59,12 +79,26 @@ def run(snapshot: RepoSnapshot) -> list[Finding]:
 def _env_keys(snapshot: RepoSnapshot) -> set[str]:
     keys: set[str] = set()
     for path, text in snapshot.texts.items():
-        if "/fixtures/" in f"/{path}":
-            continue
-        if path.startswith(".") and not path.startswith((".github/", ".agents/", ".claude/", ".codex/")):
+        if not _should_infer_env_from(path):
             continue
         for pattern in PATTERNS:
             for match in pattern.findall(text):
                 if not match.startswith(IGNORED_PREFIXES):
                     keys.add(match)
     return keys
+
+
+def _should_infer_env_from(path: str) -> bool:
+    parts = path.replace("\\", "/").split("/")
+    lowered = [part.lower() for part in parts]
+    if "tests" in lowered and "fixtures" in lowered:
+        return False
+    if any(part in INFERENCE_IGNORED_PARTS or _looks_local_env_dir(part) for part in lowered):
+        return False
+    if path.startswith(".") and not path.startswith((".github/", ".agents/", ".claude/", ".codex/")):
+        return False
+    return True
+
+
+def _looks_local_env_dir(part: str) -> bool:
+    return part.endswith("-env") or part.endswith("_env")
