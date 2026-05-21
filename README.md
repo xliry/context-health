@@ -136,4 +136,5 @@ Default ignores include `.git`, `node_modules`, `.next`, `dist`, `build`, `cover
 python -m pip install -e ".[dev]"
 context-health --help
 pytest -q
+python scripts/package_smoke.py
 ```
