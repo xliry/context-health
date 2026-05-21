@@ -2,9 +2,11 @@
 
 ![Context Health explainer](docs/assets/explainer.png)
 
-`context-health` checks whether a repo gives coding agents enough context to work safely: run commands, test commands, env examples, agent instructions, and context bloat.
+`context-health` checks whether a repo gives coding agents enough working context to make useful changes: run commands, test commands, env examples, agent instructions, and avoidable context bloat.
 
-It does not judge code quality or guarantee agent success. It catches common context friction before you hand a repo to an agent.
+Run it before handing a repo to a coding agent to catch the missing "how do I run this?", "how do I test this?", and "what should the agent know first?" details that often slow down an otherwise straightforward task.
+
+It does not judge code quality, guarantee agent success, review security, scan dependencies for vulnerabilities, or call an LLM. It is a small local CLI for repository context readiness.
 
 ## Install
 
@@ -14,21 +16,25 @@ From a local checkout:
 python -m pip install -e ".[dev]"
 ```
 
+The package is not currently published to PyPI, so install from a checkout rather than using `pip install context-health`.
+
 ## Scan A Repo
 
 ```bash
 context-health .
 ```
 
+`context-health .` prints a score, verdict, and the highest-value findings to fix before agent handoff.
+
 Example terminal output:
 
 ```text
-Context Health: 74/100 - needs_context_work
+Context Health: 59/100 - needs_context_work
 
 Top findings:
-  [medium] docs.readme_missing_test_command
-    package.json contains a test script but README does not document a test command
-    fix: Add the exact test command to README.md or AGENTS.md
+  [high] docs.missing_readme
+    No root README.md, readme.md, or README file was found
+    fix: Add README with purpose, install, run, and test commands
 ```
 
 ## JSON Output
@@ -64,11 +70,15 @@ The JSON report includes `score`, `verdict`, `summary`, `repo_profile`, `recomme
 context-health . --markdown context-health-report.md
 ```
 
+Markdown output is useful for saving a readable handoff report alongside an issue, pull request, or agent prompt.
+
 JSON stays valid when Markdown is also requested:
 
 ```bash
 context-health . --json --markdown context-health-report.md
 ```
+
+On Windows PowerShell 5.1, bare `>` redirection can write UTF-16 files. Prefer `cmd /c "context-health . --json > report.json"` or write stdout as UTF-8 before piping to JSON tooling.
 
 ## CI Gate
 
@@ -79,6 +89,13 @@ context-health . --fail-under 80
 ```
 
 Invalid paths and usage errors exit `2`.
+
+Example GitHub Actions gate:
+
+```yaml
+- name: Dogfood context health
+  run: context-health . --fail-under 95
+```
 
 ## Options
 
