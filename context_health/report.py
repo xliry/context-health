@@ -35,12 +35,13 @@ def render_markdown(report: Report) -> str:
         f"- Verdict: `{report.verdict}`",
         f"- Ecosystems: `{', '.join(report.profile.ecosystems)}`",
         f"- Package manager: `{report.profile.package_manager or 'unknown'}`",
+        f"- Workspaces: `{', '.join(report.profile.workspaces) or 'none'}`",
         "",
         "## Findings",
         "",
     ]
     if not report.findings:
-        lines.append("No findings.")
+        lines.extend(["No findings.", ""])
     for finding in report.findings:
         lines.extend(
             [

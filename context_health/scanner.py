@@ -148,6 +148,7 @@ def _profile(root: Path, files: list[FileInfo], texts: dict[str, str]) -> RepoPr
     package = _parse_json(texts.get("package.json", ""))
     pyproject = _parse_toml(texts.get("pyproject.toml", ""))
     scripts = package.get("scripts", {}) if isinstance(package.get("scripts"), dict) else {}
+    workspaces = _workspace_patterns(package, texts.get("pnpm-workspace.yaml", ""))
     ecosystems: list[str] = []
     if "package.json" in paths:
         ecosystems.append("node")
@@ -164,8 +165,10 @@ def _profile(root: Path, files: list[FileInfo], texts: dict[str, str]) -> RepoPr
             ecosystems.append("next")
         if "vite" in deps:
             ecosystems.append("vite")
-        if package.get("workspaces") or "pnpm-workspace.yaml" in paths:
+        if package.get("workspaces") or "pnpm-workspace.yaml" in paths or workspaces:
             ecosystems.append("monorepo")
+    elif workspaces:
+        ecosystems.append("monorepo")
     if pyproject.get("tool", {}).get("uv") or "uv.lock" in paths:
         ecosystems.append("python")
     package_manager = _package_manager(package, paths, texts.get("README.md", "") + texts.get("readme.md", ""))
@@ -173,12 +176,53 @@ def _profile(root: Path, files: list[FileInfo], texts: dict[str, str]) -> RepoPr
     return RepoProfile(
         ecosystems=tuple(dict.fromkeys(ecosystems)) or ("generic",),
         package_manager=package_manager,
+        workspaces=workspaces,
         has_readme=any(path.lower() in {"readme.md", "readme"} for path in paths),
         has_env_example=(".env.example" in paths or ".env.sample" in paths),
         has_ci=any(path.startswith(".github/workflows/") for path in paths),
         scripts={str(k): str(v) for k, v in scripts.items()},
         important_files=important,
     )
+
+
+def _workspace_patterns(package: dict[str, Any], pnpm_workspace: str) -> tuple[str, ...]:
+    patterns: list[str] = []
+    workspaces = package.get("workspaces")
+    if isinstance(workspaces, list):
+        patterns.extend(_normalize_workspace_pattern(item) for item in workspaces)
+    elif isinstance(workspaces, dict) and isinstance(workspaces.get("packages"), list):
+        patterns.extend(_normalize_workspace_pattern(item) for item in workspaces["packages"])
+    patterns.extend(_normalize_workspace_pattern(item) for item in _parse_pnpm_workspace_packages(pnpm_workspace))
+    return tuple(pattern for pattern in dict.fromkeys(patterns) if pattern)
+
+
+def _normalize_workspace_pattern(value: Any) -> str:
+    if not isinstance(value, str):
+        return ""
+    pattern = value.replace("\\", "/").strip()
+    while pattern.startswith("./"):
+        pattern = pattern[2:]
+    return pattern
+
+
+def _parse_pnpm_workspace_packages(text: str) -> list[str]:
+    packages: list[str] = []
+    in_packages = False
+    for raw_line in text.splitlines():
+        line = raw_line.split("#", 1)[0].rstrip()
+        if not line.strip():
+            continue
+        is_top_level = line == line.lstrip()
+        if is_top_level:
+            if in_packages and re.match(r"^[A-Za-z0-9_-]+:", line):
+                break
+            in_packages = line.strip() == "packages:"
+            continue
+        if in_packages:
+            stripped = line.strip()
+            if stripped.startswith("- "):
+                packages.append(stripped[2:].strip().strip("\"'"))
+    return packages
 
 
 def _parse_json(text: str) -> dict[str, Any]:

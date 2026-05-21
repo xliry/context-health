@@ -18,3 +18,14 @@ def test_json_and_markdown_render():
     md = render_markdown(report)
     assert "# Context Health Report" in md
     assert "docs.missing_readme" in md
+
+
+def test_json_and_markdown_render_workspaces():
+    snapshot = scan(ScanConfig(FIXTURES / "pnpm_monorepo"))
+    report = build_report(run_rules(snapshot), snapshot.profile)
+
+    parsed = json.loads(render_json(report))
+    assert parsed["repo_profile"]["workspaces"] == ["apps/*", "packages/*"]
+    md = render_markdown(report)
+    assert "- Workspaces: `apps/*, packages/*`" in md
+    assert "No findings.\n\n## Next Actions" in md

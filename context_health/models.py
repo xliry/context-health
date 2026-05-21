@@ -31,6 +31,7 @@ class FileInfo:
 class RepoProfile:
     ecosystems: tuple[str, ...] = ()
     package_manager: str | None = None
+    workspaces: tuple[str, ...] = ()
     has_readme: bool = False
     has_env_example: bool = False
     has_ci: bool = False
@@ -41,6 +42,7 @@ class RepoProfile:
         return {
             "ecosystems": list(self.ecosystems),
             "package_manager": self.package_manager,
+            "workspaces": list(self.workspaces),
             "has_readme": self.has_readme,
             "has_env_example": self.has_env_example,
             "has_ci": self.has_ci,

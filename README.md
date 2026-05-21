@@ -43,7 +43,7 @@ Top findings:
 context-health . --json
 ```
 
-The JSON report includes `score`, `verdict`, `summary`, `repo_profile`, `recommendations`, and evidence-backed `findings`.
+The JSON report includes `score`, `verdict`, `summary`, `repo_profile`, `recommendations`, and evidence-backed `findings`. For monorepos, `repo_profile.workspaces` includes detected workspace patterns such as `apps/*` and `packages/*`.
 
 ```json
 {

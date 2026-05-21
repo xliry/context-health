@@ -2,6 +2,10 @@
 
 All notable changes to Context Health will be documented in this file.
 
+## Unreleased
+
+- Added detected monorepo workspace patterns to `repo_profile.workspaces`.
+
 ## 0.1.0 - 2026-05-21
 
 - Initial Python CLI for checking repository agent-context readiness.
