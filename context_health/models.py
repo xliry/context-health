@@ -16,6 +16,7 @@ class ScanConfig:
     exclude: tuple[str, ...] = ()
     max_file_kb: int = 512
     verbose: bool = False
+    config_file: str | None = None
 
 
 @dataclass(frozen=True)
@@ -32,6 +33,7 @@ class RepoProfile:
     ecosystems: tuple[str, ...] = ()
     package_manager: str | None = None
     workspaces: tuple[str, ...] = ()
+    config_file: str | None = None
     has_readme: bool = False
     has_env_example: bool = False
     has_ci: bool = False
@@ -43,6 +45,7 @@ class RepoProfile:
             "ecosystems": list(self.ecosystems),
             "package_manager": self.package_manager,
             "workspaces": list(self.workspaces),
+            "config_file": self.config_file,
             "has_readme": self.has_readme,
             "has_env_example": self.has_env_example,
             "has_ci": self.has_ci,

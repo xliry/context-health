@@ -83,7 +83,7 @@ RULES = [
 
 def scan(config: ScanConfig) -> RepoSnapshot:
     files, texts = _walk(config)
-    profile = _profile(config.root, files, texts)
+    profile = _profile(config, files, texts)
     return RepoSnapshot(config.root, config, tuple(files), profile, texts)
 
 
@@ -143,7 +143,7 @@ def _looks_source(rel: str) -> bool:
     return Path(rel).suffix.lower() in {".py", ".js", ".jsx", ".ts", ".tsx"}
 
 
-def _profile(root: Path, files: list[FileInfo], texts: dict[str, str]) -> RepoProfile:
+def _profile(config: ScanConfig, files: list[FileInfo], texts: dict[str, str]) -> RepoProfile:
     paths = {file.path for file in files}
     package = _parse_json(texts.get("package.json", ""))
     pyproject = _parse_toml(texts.get("pyproject.toml", ""))
@@ -177,6 +177,7 @@ def _profile(root: Path, files: list[FileInfo], texts: dict[str, str]) -> RepoPr
         ecosystems=tuple(dict.fromkeys(ecosystems)) or ("generic",),
         package_manager=package_manager,
         workspaces=workspaces,
+        config_file=config.config_file,
         has_readme=any(path.lower() in {"readme.md", "readme"} for path in paths),
         has_env_example=(".env.example" in paths or ".env.sample" in paths),
         has_ci=any(path.startswith(".github/workflows/") for path in paths),

@@ -47,6 +47,7 @@
     "Add AGENTS.md or a README agent section with run and verification commands"
   ],
   "repo_profile": {
+    "config_file": null,
     "ecosystems": [
       "node",
       "vite"

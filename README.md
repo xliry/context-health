@@ -101,6 +101,19 @@ Example GitHub Actions gate:
   run: context-health . --fail-under 95
 ```
 
+## Config File
+
+Commit `.context-health.toml` at the repo root to set stable scan defaults:
+
+```toml
+include = ["src/**", "README.md"]
+exclude = ["docs/generated/**"]
+max_file_kb = 256
+fail_under = 80
+```
+
+CLI flags still win: `--include` and `--exclude` extend config lists, while `--max-file-kb` and `--fail-under` override config values.
+
 ## Options
 
 ```text

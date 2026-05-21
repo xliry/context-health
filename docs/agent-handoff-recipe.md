@@ -28,6 +28,8 @@ Use the Markdown report for human-readable handoff notes. Use the JSON report wh
 
 On Windows PowerShell 5.1, bare `>` redirection can write UTF-16 files. Prefer `cmd /c "context-health . --json > context-health-report.json"` or write stdout as UTF-8 before passing JSON to other tools.
 
+Teams can commit `.context-health.toml` at the repo root for stable include/exclude defaults, large-file thresholds, and handoff gates.
+
 ## CI Gate
 
 Use `--fail-under` when the repo should meet a minimum context readiness bar before agent work begins:

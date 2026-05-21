@@ -57,6 +57,7 @@
     "Add exact install/setup commands to AGENTS.md or the root agent instruction file"
   ],
   "repo_profile": {
+    "config_file": null,
     "ecosystems": [
       "node"
     ],

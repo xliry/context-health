@@ -2,6 +2,7 @@
   "findings": [],
   "recommendations": [],
   "repo_profile": {
+    "config_file": null,
     "ecosystems": [
       "node",
       "monorepo"

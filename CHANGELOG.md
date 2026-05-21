@@ -12,6 +12,7 @@ All notable changes to Context Health will be documented in this file.
 - Hardened sdist manifest to include full test assets and exclude generated artifacts.
 - Added finding catalog documentation and sync coverage.
 - Added an agent handoff recipe for using Context Health before coding-agent work.
+- Added optional `.context-health.toml` scan defaults.
 
 ## 0.1.0 - 2026-05-21
 
