@@ -1,0 +1,90 @@
+{
+  "findings": [
+    {
+      "category": "docs",
+      "evidence": "No root README.md, readme.md, or README file was found",
+      "id": "docs.missing_readme",
+      "line": null,
+      "path": null,
+      "recommendation": "Add README with purpose, install, run, and test commands",
+      "severity": "high",
+      "title": "README is missing"
+    },
+    {
+      "category": "agent",
+      "evidence": "package script `dev` was found, but agent instructions do not mention run/dev commands",
+      "id": "agent.instructions_missing_run",
+      "line": null,
+      "path": "AGENTS.md",
+      "recommendation": "Add exact run/dev commands to AGENTS.md or the root agent instruction file",
+      "severity": "low",
+      "title": "Agent instructions omit run commands"
+    },
+    {
+      "category": "agent",
+      "evidence": "Project metadata was found, but agent instructions do not mention setup or install commands",
+      "id": "agent.instructions_missing_setup",
+      "line": null,
+      "path": "AGENTS.md",
+      "recommendation": "Add exact install/setup commands to AGENTS.md or the root agent instruction file",
+      "severity": "low",
+      "title": "Agent instructions omit setup commands"
+    },
+    {
+      "category": "agent",
+      "evidence": "package script `test` was found, but agent instructions do not mention test or verification commands",
+      "id": "agent.instructions_missing_tests",
+      "line": null,
+      "path": "AGENTS.md",
+      "recommendation": "Add exact test/verification commands to AGENTS.md or the root agent instruction file",
+      "severity": "low",
+      "title": "Agent instructions omit test commands"
+    },
+    {
+      "category": "tests",
+      "evidence": "No .github/workflows files were found",
+      "id": "tests.no_ci_evidence",
+      "line": null,
+      "path": null,
+      "recommendation": "Add CI or document local verification commands",
+      "severity": "low",
+      "title": "No CI evidence found"
+    }
+  ],
+  "recommendations": [
+    "Add README with purpose, install, run, and test commands",
+    "Add exact run/dev commands to AGENTS.md or the root agent instruction file",
+    "Add exact install/setup commands to AGENTS.md or the root agent instruction file"
+  ],
+  "repo_profile": {
+    "ecosystems": [
+      "node"
+    ],
+    "has_ci": false,
+    "has_env_example": false,
+    "has_readme": false,
+    "important_files": [
+      "AGENTS.md",
+      "package.json"
+    ],
+    "package_manager": null,
+    "scripts": {
+      "dev": "vite",
+      "test": "vitest run"
+    },
+    "workspaces": []
+  },
+  "score": 73,
+  "summary": {
+    "by_category": {
+      "agent": 3,
+      "docs": 1,
+      "tests": 1
+    },
+    "by_severity": {
+      "high": 1,
+      "low": 4
+    }
+  },
+  "verdict": "needs_context_work"
+}

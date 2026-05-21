@@ -7,6 +7,7 @@ All notable changes to Context Health will be documented in this file.
 - Added detected monorepo workspace patterns to `repo_profile.workspaces`.
 - Added deterministic agent instruction quality checks for setup, run, and test guidance.
 - Added simple README/AGENTS command mismatch detection.
+- Added lightweight output snapshot tests for terminal, JSON, and Markdown reports.
 
 ## 0.1.0 - 2026-05-21
 

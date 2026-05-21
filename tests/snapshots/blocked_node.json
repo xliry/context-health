@@ -1,0 +1,82 @@
+{
+  "findings": [
+    {
+      "category": "docs",
+      "evidence": "No root README.md, readme.md, or README file was found",
+      "id": "docs.missing_readme",
+      "line": null,
+      "path": null,
+      "recommendation": "Add README with purpose, install, run, and test commands",
+      "severity": "high",
+      "title": "README is missing"
+    },
+    {
+      "category": "env",
+      "evidence": "Code references env vars (API_KEY) but no .env.example or .env.sample exists",
+      "id": "env.missing_example",
+      "line": null,
+      "path": null,
+      "recommendation": "Add .env.example with required key names and fake values",
+      "severity": "high",
+      "title": "Environment example file is missing"
+    },
+    {
+      "category": "agent",
+      "evidence": "No AGENTS.md, CLAUDE.md, GEMINI.md, tool instruction folder, or README agent section was found",
+      "id": "agent.missing_instructions",
+      "line": null,
+      "path": null,
+      "recommendation": "Add AGENTS.md or a README agent section with run and verification commands",
+      "severity": "medium",
+      "title": "Agent instructions are missing"
+    },
+    {
+      "category": "tests",
+      "evidence": "No .github/workflows files were found",
+      "id": "tests.no_ci_evidence",
+      "line": null,
+      "path": null,
+      "recommendation": "Add CI or document local verification commands",
+      "severity": "low",
+      "title": "No CI evidence found"
+    }
+  ],
+  "recommendations": [
+    "Add README with purpose, install, run, and test commands",
+    "Add .env.example with required key names and fake values",
+    "Add AGENTS.md or a README agent section with run and verification commands"
+  ],
+  "repo_profile": {
+    "ecosystems": [
+      "node",
+      "vite"
+    ],
+    "has_ci": false,
+    "has_env_example": false,
+    "has_readme": false,
+    "important_files": [
+      "package.json"
+    ],
+    "package_manager": null,
+    "scripts": {
+      "dev": "vite",
+      "test": "vitest run"
+    },
+    "workspaces": []
+  },
+  "score": 59,
+  "summary": {
+    "by_category": {
+      "agent": 1,
+      "docs": 1,
+      "env": 1,
+      "tests": 1
+    },
+    "by_severity": {
+      "high": 2,
+      "low": 1,
+      "medium": 1
+    }
+  },
+  "verdict": "needs_context_work"
+}

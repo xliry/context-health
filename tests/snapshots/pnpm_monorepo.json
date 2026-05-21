@@ -1,0 +1,35 @@
+{
+  "findings": [],
+  "recommendations": [],
+  "repo_profile": {
+    "ecosystems": [
+      "node",
+      "monorepo"
+    ],
+    "has_ci": true,
+    "has_env_example": false,
+    "has_readme": true,
+    "important_files": [
+      ".github/workflows/test.yml",
+      "AGENTS.md",
+      "README.md",
+      "package.json",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml"
+    ],
+    "package_manager": "pnpm",
+    "scripts": {
+      "test": "pnpm -r test"
+    },
+    "workspaces": [
+      "apps/*",
+      "packages/*"
+    ]
+  },
+  "score": 100,
+  "summary": {
+    "by_category": {},
+    "by_severity": {}
+  },
+  "verdict": "agent_ready"
+}

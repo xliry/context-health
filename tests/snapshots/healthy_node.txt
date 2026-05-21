@@ -1,0 +1,3 @@
+Context Health: 100/100 - agent_ready
+
+No context blockers found.
