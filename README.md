@@ -6,6 +6,8 @@
 
 Run it before handing a repo to a coding agent to catch the missing "how do I run this?", "how do I test this?", and "what should the agent know first?" details that often slow down an otherwise straightforward task.
 
+For a copy-paste workflow, see [docs/agent-handoff-recipe.md](docs/agent-handoff-recipe.md).
+
 It does not judge code quality, guarantee agent success, review security, scan dependencies for vulnerabilities, or call an LLM. It is a small local CLI for repository context readiness.
 
 ## Install
