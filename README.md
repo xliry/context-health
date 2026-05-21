@@ -10,6 +10,8 @@ For a copy-paste workflow, see [docs/agent-handoff-recipe.md](docs/agent-handoff
 
 It does not judge code quality, guarantee agent success, review security, scan dependencies for vulnerabilities, or call an LLM. It is a small local CLI for repository context readiness.
 
+Known v0.2 limitations are documented in [docs/known-limitations.md](docs/known-limitations.md), including large mixed repository and env-var inference caveats.
+
 ## Install
 
 From a local checkout:
@@ -113,6 +115,26 @@ fail_under = 80
 ```
 
 CLI flags still win: `--include` and `--exclude` extend config lists, while `--max-file-kb` and `--fail-under` override config values.
+
+For large or mixed repos, exclude generated, vendored, and virtualenv-like paths before scanning first-party code:
+
+```toml
+exclude = [
+  "*-env/**",
+  ".venv/**",
+  "venv/**",
+  "node_modules/**",
+  "ComfyUI/**",
+  "outputs/**",
+  "runs/**"
+]
+max_file_kb = 256
+fail_under = 80
+```
+
+Adapt excludes to the repo, and do not hide first-party source code just to raise the score.
+
+v0.2 dogfood on real local repos found the tool most useful after excluding generated, vendored, and virtualenv-like paths in large mixed repositories.
 
 ## Options
 

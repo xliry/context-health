@@ -30,6 +30,24 @@ On Windows PowerShell 5.1, bare `>` redirection can write UTF-16 files. Prefer `
 
 Teams can commit `.context-health.toml` at the repo root for stable include/exclude defaults, large-file thresholds, and handoff gates.
 
+For large or mixed repos, start with a narrow config that removes generated, vendored, and virtualenv-like paths from agent context:
+
+```toml
+exclude = [
+  "*-env/**",
+  ".venv/**",
+  "venv/**",
+  "node_modules/**",
+  "ComfyUI/**",
+  "outputs/**",
+  "runs/**"
+]
+max_file_kb = 256
+fail_under = 80
+```
+
+Adapt the excludes to your repo. Keep first-party source, docs, tests, and handoff files visible unless there is a clear reason to exclude them.
+
 ## CI Gate
 
 Use `--fail-under` when the repo should meet a minimum context readiness bar before agent work begins:

@@ -4,7 +4,7 @@ All notable changes to Context Health will be documented in this file.
 
 ## Unreleased
 
-- No changes yet.
+- Documented v0.2 dogfood limitations and config recipes for large mixed repositories.
 
 ## 0.2.0 - 2026-05-21
 
