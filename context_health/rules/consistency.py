@@ -7,6 +7,7 @@ from context_health.rules import finding
 
 
 LOCKS = {"pnpm-lock.yaml": "pnpm", "package-lock.json": "npm", "yarn.lock": "yarn"}
+COMMAND_HINTS = ("uv run pytest", "pnpm test", "npm test", "yarn test", "pytest")
 
 
 def run(snapshot: RepoSnapshot) -> list[Finding]:
@@ -35,6 +36,19 @@ def run(snapshot: RepoSnapshot) -> list[Finding]:
                 recommendation="Align README install/run/test commands with the detected package manager",
             ))
     agent_texts = {path: snapshot.texts[path] for path in ("AGENTS.md", "CLAUDE.md") if path in snapshot.texts}
+    if readme and "AGENTS.md" in agent_texts:
+        readme_command = _command_hint(readme)
+        agents_command = _command_hint(agent_texts["AGENTS.md"])
+        if readme_command and agents_command and readme_command != agents_command:
+            findings.append(finding(
+                id="consistency.agent_readme_command_mismatch",
+                title="README and AGENTS.md imply different verification commands",
+                severity="low",
+                category="consistency",
+                path="AGENTS.md",
+                evidence=f"README mentions {readme_command}, while AGENTS.md mentions {agents_command}",
+                recommendation="Align README and AGENTS.md on the exact install/run/test commands agents should use",
+            ))
     if len(agent_texts) == 2:
         commands = {path: _command_hint(text) for path, text in agent_texts.items()}
         if commands["AGENTS.md"] and commands["CLAUDE.md"] and commands["AGENTS.md"] != commands["CLAUDE.md"]:
@@ -58,7 +72,7 @@ def _readme_mismatch(readme: str, manager: str) -> str | None:
 
 def _command_hint(text: str) -> str | None:
     lower = text.lower()
-    for hint in ("pnpm test", "npm test", "yarn test", "pytest", "uv run pytest"):
+    for hint in COMMAND_HINTS:
         if hint in lower:
             return hint
     return None

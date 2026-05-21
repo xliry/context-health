@@ -1,4 +1,5 @@
 # Agent Instructions
 
-Use pnpm.
-Verify with `pnpm test`.
+- Install dependencies with `pnpm install`.
+- Run the app with `pnpm dev`.
+- Verify with `pnpm test`.

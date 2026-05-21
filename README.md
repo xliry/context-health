@@ -112,9 +112,9 @@ Default ignores include `.git`, `node_modules`, `.next`, `dist`, `build`, `cover
 - README presence and run/test command documentation
 - `.env.example` or `.env.sample` when code references env vars
 - obvious `.env` files committed to the repo
-- root or discoverable agent instructions
+- root or discoverable agent instructions, including setup/run/test guidance
 - conflicting package manager signals
-- possible conflicts between agent instruction files
+- possible conflicts between agent instruction files and simple README/AGENTS command mismatches
 - large text files and generated artifacts that remain in scanned paths
 - test command and CI evidence
 
