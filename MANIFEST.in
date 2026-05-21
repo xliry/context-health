@@ -1,0 +1,12 @@
+include LICENSE
+include README.md
+include pyproject.toml
+
+recursive-include context_health *.py
+graft tests
+
+prune context_health.egg-info
+prune tests/fixtures/bloaty_repo/dist
+prune tests/fixtures/healthy_node/node_modules
+
+global-exclude *.py[cod]

@@ -9,6 +9,7 @@ All notable changes to Context Health will be documented in this file.
 - Added simple README/AGENTS command mismatch detection.
 - Added lightweight output snapshot tests for terminal, JSON, and Markdown reports.
 - Added package build smoke verification for wheel and sdist release artifacts.
+- Hardened sdist manifest to include full test assets and exclude generated artifacts.
 
 ## 0.1.0 - 2026-05-21
 

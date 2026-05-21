@@ -4,6 +4,7 @@ import json
 import shutil
 import subprocess
 import sys
+import tarfile
 import tempfile
 import venv
 from pathlib import Path
@@ -16,7 +17,8 @@ DIST = ROOT / "dist"
 def main() -> int:
     _clean_dist()
     _run([sys.executable, "-m", "build"], cwd=ROOT)
-    wheel = _built_wheel()
+    sdist, wheel = _built_artifacts()
+    _check_sdist(sdist)
 
     with tempfile.TemporaryDirectory(prefix="context-health-smoke-") as tmp:
         venv_dir = Path(tmp) / "venv"
@@ -48,7 +50,7 @@ def _clean_dist() -> None:
             path.unlink()
 
 
-def _built_wheel() -> Path:
+def _built_artifacts() -> tuple[Path, Path]:
     wheels = sorted(DIST.glob("*.whl"))
     if len(wheels) != 1:
         raise RuntimeError(f"Expected exactly one wheel in {DIST}, found {len(wheels)}")
@@ -56,7 +58,48 @@ def _built_wheel() -> Path:
     if len(sdists) != 1:
         raise RuntimeError(f"Expected exactly one sdist in {DIST}, found {len(sdists)}")
     print(f"built artifacts: {sdists[0].name}, {wheels[0].name}")
-    return wheels[0]
+    return sdists[0], wheels[0]
+
+
+def _check_sdist(sdist: Path) -> None:
+    required = {
+        "tests/fixtures/healthy_node/README.md",
+        "tests/fixtures/blocked_node/package.json",
+        "tests/snapshots/blocked_node.json",
+        "tests/snapshots/healthy_node.txt",
+    }
+    forbidden = {
+        "dist/",
+        "build/",
+        ".pytest_cache/",
+        "__pycache__/",
+        "context_health.egg-info/",
+        "blocked.json",
+        "context-health-report.json",
+    }
+    with tarfile.open(sdist, "r:gz") as archive:
+        members = {_strip_archive_root(name) for name in archive.getnames()}
+
+    missing = sorted(path for path in required if path not in members)
+    if missing:
+        raise RuntimeError(f"sdist is missing expected test assets: {', '.join(missing)}")
+
+    present_forbidden = sorted(path for path in members for forbidden_path in forbidden if _matches(path, forbidden_path))
+    if present_forbidden:
+        raise RuntimeError(f"sdist contains generated artifacts: {', '.join(present_forbidden)}")
+    print("sdist manifest check passed")
+
+
+def _strip_archive_root(name: str) -> str:
+    normalized = name.replace("\\", "/")
+    parts = normalized.split("/", 1)
+    return parts[1] if len(parts) == 2 else parts[0]
+
+
+def _matches(path: str, forbidden: str) -> bool:
+    if forbidden.endswith("/"):
+        return forbidden.rstrip("/") in path.split("/")
+    return path == forbidden
 
 
 def _venv_python(venv_dir: Path) -> Path:

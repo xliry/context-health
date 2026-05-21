@@ -138,3 +138,5 @@ context-health --help
 pytest -q
 python scripts/package_smoke.py
 ```
+
+The package smoke builds wheel and sdist artifacts, checks representative sdist test assets, installs the wheel into a fresh virtual environment, and runs the installed CLI.
