@@ -15,6 +15,13 @@ def test_help():
     result = run_cli("--help")
     assert result.returncode == 0
     assert "context readiness" in result.stdout
+    assert "run-audit" in result.stdout
+
+
+def test_run_audit_help():
+    result = run_cli("run-audit", "--help")
+    assert result.returncode == 0
+    assert "run artifacts" in result.stdout.lower()
 
 
 def test_json_markdown_and_fail_under(tmp_path):

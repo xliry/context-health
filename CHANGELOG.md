@@ -4,6 +4,7 @@ All notable changes to Context Health will be documented in this file.
 
 ## Unreleased
 
+- Added an agent run audit command for reviewing coding-agent handoffs, diffs, verification evidence, and risk heuristics.
 - Reduced env-var inference noise from virtualenv-like, generated, vendored, dependency, cache, and fixture paths.
 - Documented v0.2 dogfood limitations and config recipes for large mixed repositories.
 

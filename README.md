@@ -8,6 +8,8 @@ Run it before handing a repo to a coding agent to catch the missing "how do I ru
 
 For a copy-paste workflow, see [docs/agent-handoff-recipe.md](docs/agent-handoff-recipe.md).
 
+After an agent finishes, use `context-health run-audit <run-dir>` to review the handoff quality, verification evidence, diff risk, and heuristic cost profile. See [docs/agent-run-audit.md](docs/agent-run-audit.md).
+
 It does not judge code quality, guarantee agent success, review security, scan dependencies for vulnerabilities, or call an LLM. It is a small local CLI for repository context readiness.
 
 Known v0.2 limitations are documented in [docs/known-limitations.md](docs/known-limitations.md), including large mixed repository and env-var inference caveats.
@@ -142,6 +144,10 @@ v0.2 dogfood on real local repos found the tool most useful after excluding gene
 context-health [path] [--json] [--markdown PATH] [--fail-under SCORE]
                [--include GLOB] [--exclude GLOB] [--max-file-kb KB]
                [--verbose]
+
+context-health run-audit <path> [--json] [--markdown PATH]
+                 [--repo PATH] [--fail-under SCORE] [--max-file-kb KB]
+                 [--verbose]
 ```
 
 Default ignores include `.git`, `node_modules`, `.next`, `dist`, `build`, `coverage`, virtualenv-like folders such as `.venv`, `venv`, `env`, `*-env`, and `*_env`, caches, and similar generated dependency paths.

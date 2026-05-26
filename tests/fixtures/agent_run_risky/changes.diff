@@ -1,0 +1,14 @@
+diff --git a/.env.local b/.env.local
+index 1111111..2222222 100644
+--- a/.env.local
++++ b/.env.local
+@@ -1 +1 @@
+-FEATURE_FLAG=false
++FEATURE_FLAG=true
+diff --git a/src/app.py b/src/app.py
+index 3333333..4444444 100644
+--- a/src/app.py
++++ b/src/app.py
+@@ -1 +1 @@
+-print("old")
++print("new")

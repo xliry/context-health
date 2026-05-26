@@ -30,7 +30,9 @@ def main() -> int:
 
         _run([str(python), "-m", "pip", "install", str(wheel)], cwd=work_dir)
         _run([str(context_health), "--help"], cwd=work_dir)
+        _run([str(context_health), "run-audit", "--help"], cwd=work_dir)
         _run([str(context_health), str(ROOT / "tests" / "fixtures" / "healthy_node")], cwd=work_dir)
+        _run([str(context_health), "run-audit", str(ROOT / "tests" / "fixtures" / "agent_run_good")], cwd=work_dir)
         blocked = _run([str(context_health), str(ROOT / "tests" / "fixtures" / "blocked_node"), "--json"], cwd=work_dir)
         json.loads(blocked.stdout)
 
